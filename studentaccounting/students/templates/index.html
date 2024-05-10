@@ -118,6 +118,8 @@
                 <input
                   id="id_number"
                   name="id_number"
+                  maxlength="6"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                   type="text"
                   placeholder="ID Number"
                   class="rounded-xl w-full"
@@ -131,6 +133,7 @@
                   id="first_name"
                   name="first_name"
                   type="text"
+                  oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                   placeholder="First Name"
                   class="rounded-xl w-full"
                 />
@@ -142,7 +145,9 @@
                 <input
                   id="middle_initial"
                   name="middle_initial"
+                  maxlength="1"
                   type="text"
+                  oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                   placeholder="Middle Initial"
                   class="rounded-xl w-full"
                 />
@@ -155,6 +160,7 @@
                   id="last_name"
                   name="last_name"
                   type="text"
+                  oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                   placeholder="Last Name"
                   class="rounded-xl w-full"
                 />
@@ -172,37 +178,155 @@
                 />
               </label>
               <label class="input flex items-center gap-2 w-full" for="gender">
-                <input
-                  id="gender"
+                <select
+                  class="select select-bordered rounded-xl w-full max-w-xs"
                   name="gender"
-                  type="text"
-                  placeholder="Gender"
-                  class="rounded-xl w-full"
-                />
+                  id="gender"
+                >
+                  <option disabled selected>Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
               </label>
               <label
                 class="input flex items-center gap-2 w-full"
                 for="course_name"
               >
-                <input
-                  id="course_name"
+                <select
+                  class="select select-bordered rounded-xl w-full max-w-xs"
                   name="course_name"
-                  type="text"
-                  placeholder="Course Name"
-                  class="rounded-xl w-full"
-                />
+                  id="course_name"
+                >
+                  <option disabled selected>Select a Course</option>
+                  <option>
+                    Bachelor of Science in Civil Engineering (BSCE)
+                  </option>
+                  <option>
+                    Bachelor of Science in Computer Engineering (BSCpE)
+                  </option>
+                  <option>
+                    Bachelor of Science in Electrical Engineering (BSEE)
+                  </option>
+                  <option>
+                    Bachelor of Science in Electronics Engineering (BSEcE)
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Engineering (BSIE)
+                  </option>
+                  <option>
+                    Bachelor of Science in Mechanical Engineering (BSME)
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Automotive Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) - Civil
+                    Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Cosmetology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Drafting Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Electrical Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Electronics Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) - Food
+                    Preparation and Services Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Furniture and Cabinet Making
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Garments Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Interior Design Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Machine Shop Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) - Power
+                    Plant Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Refrigeration and Air-conditioning Technology
+                  </option>
+                  <option>
+                    Bachelor of Science in Industrial Technology (BSIT) -
+                    Welding and Fabrication Technology
+                  </option>
+                  <option>
+                    Bachelor of Arts in Communication (AB Communication)
+                  </option>
+                  <option>
+                    Bachelor of Science in Business Administration (BSBA) -
+                    Human Resource Management
+                  </option>
+                  <option>
+                    Bachelor of Science in Business Administration (BSBA) -
+                    Marketing Management
+                  </option>
+                  <option>
+                    Bachelor of Science in Information Technology (BSIT)
+                  </option>
+                  <option>Bachelor of Science in Criminology (BSCrim)</option>
+                  <option>Bachelor of Science in Psychology (BSPsych)</option>
+                  <option>Bachelor of Elementary Education (BEEd)</option>
+                  <option>
+                    Bachelor of Secondary Education (BSE) - Biological Sciences
+                  </option>
+                  <option>
+                    Bachelor of Secondary Education (BSE) - English
+                  </option>
+                  <option>
+                    Bachelor of Secondary Education (BSE) - Mathematics
+                  </option>
+                  <option>
+                    Bachelor of Secondary Education (BSE) - Physical Sciences
+                  </option>
+                  <option>
+                    Bachelor of Secondary Education (BSE) - Social Sciences
+                  </option>
+                  <option>
+                    Bachelor of Science in Marine Transportation (BSMT)
+                  </option>
+                  <option>
+                    Bachelor of Science in Marine Engineering (BSMarE)
+                  </option>
+                </select>
               </label>
               <label
                 class="input flex items-center gap-2 w-full"
                 for="year_level"
               >
-                <input
-                  id="year_level"
+                <select
+                  class="select select-bordered rounded-xl w-full max-w-xs"
                   name="year_level"
-                  type="text"
-                  placeholder="Year level"
-                  class="rounded-xl w-full"
-                />
+                  id="year_level"
+                >
+                  <option disabled selected>Year level</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
               </label>
               <label
                 class="input flex items-center gap-2 w-full"
@@ -212,6 +336,9 @@
                   id="subjects"
                   name="subjects"
                   type="text"
+                  max="15"
+                  maxlength="2"
+                  min="0"
                   placeholder="Number of subjects"
                   class="rounded-xl w-full"
                 />
@@ -225,6 +352,7 @@
                 type="file"
                 id="image"
                 name="image"
+                accept="image/png, image/gif, image/jpeg, image/jpg, image/bmp, image/webp"
                 class="file-input file-input-bordered file-input-sm rounded-xl w-full max-w-xs file-input-primary"
               />
             </label>
@@ -234,6 +362,11 @@
                 Add student
               </button>
             </div>
+            {% if error_messages %}
+            <p class="text-red-400 mx-4 flex justify-center mt-2">
+              {{ error_messages }}
+            </p>
+            {% endif %}
           </form>
         </div>
       </div>
