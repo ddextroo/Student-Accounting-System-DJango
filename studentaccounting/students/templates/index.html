@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="business">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+    <title>Student Accounting System</title>
+  </head>
+  <body>
+    <header>
+      <div class="flex justify-between p-4 items-center">
+        <h1 class="font-poppins text-xl font-bold">Students</h1>
+        <label class="input flex items-center gap-2">
+          <input type="text" placeholder="Search" class="rounded-xl" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="w-4 h-4 opacity-70"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </label>
+        <button
+          class="btn btn-primary rounded-2xl text-white"
+          onclick="add_student_modal.showModal()"
+        >
+          New student
+        </button>
+      </div>
+    </header>
+    <main>
+      <div class="overflow-x-auto">
+        <table class="table">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Email Address</th>
+              <th>Gender</th>
+              <th>Subjects</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students%}
+            <tr>
+              <td>
+                <div class="flex items-center gap-3">
+                  <div class="avatar">
+                    <div class="mask mask-squircle w-12 h-12">
+                      <img
+                        src="{{student.image}}"
+                        alt="Avatar Tailwind CSS Component"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold font-poppins">{{student}}</div>
+                    <div class="text-sm opacity-50">{{student.id_number}}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                {{student.course_name}}
+                <br />
+                {% if student.year_level == 1 %}
+                <span class="badge badge-ghost badge-sm">1st year</span>
+                {% elif student.year_level == 2 %}
+                <span class="badge badge-ghost badge-sm">2nd year</span>
+                {% elif student.year_level == 3 %}
+                <span class="badge badge-ghost badge-sm">3rd year</span>
+                {% elif student.year_level == 4 %}
+                <span class="badge badge-ghost badge-sm">4th year</span>
+                {% endif %}
+              </td>
+              <td>{{student.email_address}}</td>
+              <td>{{student.gender}}</td>
+              <td>{{student.subjects}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <dialog id="add_student_modal" class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Add student</h3>
+        <p class="py-4">
+          Fill in the student details below and click "Close" to cancel
+        </p>
+        <div class="modal-action">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-2">
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="id_number"
+              >
+                <input
+                  id="id_number"
+                  name="id_number"
+                  type="text"
+                  placeholder="ID Number"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="first_name"
+              >
+                <input
+                  id="first_name"
+                  name="first_name"
+                  type="text"
+                  placeholder="First Name"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="middle_initial"
+              >
+                <input
+                  id="middle_initial"
+                  name="middle_initial"
+                  type="text"
+                  placeholder="Middle Initial"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="last_name"
+              >
+                <input
+                  id="last_name"
+                  name="last_name"
+                  type="text"
+                  placeholder="Last Name"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="email_address"
+              >
+                <input
+                  id="email_address"
+                  name="email_address"
+                  type="text"
+                  placeholder="Email Address"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label class="input flex items-center gap-2 w-full" for="gender">
+                <input
+                  id="gender"
+                  name="gender"
+                  type="text"
+                  placeholder="Gender"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="course_name"
+              >
+                <input
+                  id="course_name"
+                  name="course_name"
+                  type="text"
+                  placeholder="Course Name"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="year_level"
+              >
+                <input
+                  id="year_level"
+                  name="year_level"
+                  type="text"
+                  placeholder="Year level"
+                  class="rounded-xl w-full"
+                />
+              </label>
+              <label
+                class="input flex items-center gap-2 w-full"
+                for="subjects"
+              >
+                <input
+                  id="subjects"
+                  name="subjects"
+                  type="text"
+                  placeholder="Number of subjects"
+                  class="rounded-xl w-full"
+                />
+              </label>
+            </div>
+            <label
+              class="input flex items-center gap-2 w-full mt-4"
+              for="image"
+            >
+              <input
+                type="file"
+                id="image"
+                name="image"
+                class="file-input file-input-bordered file-input-sm rounded-xl w-full max-w-xs file-input-primary"
+              />
+            </label>
+            <div class="flex justify-end gap-x-4">
+              <button class="btn rounded-xl">Close</button>
+              <button class="btn btn-primary rounded-xl" type="submit">
+                Add student
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>
