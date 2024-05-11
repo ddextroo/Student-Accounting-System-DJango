@@ -396,9 +396,11 @@
         if (searchQuery !== "") {
           performSearch(searchQuery);
         } else {
-          history.replaceState(null, null, window.location.pathname);
+          // Reload the current page without changing the URL
+          location.reload();
         }
       });
+
       function performSearch(query) {
         var url = "/students/?search=" + encodeURIComponent(query);
         $.get(url, function (data) {
