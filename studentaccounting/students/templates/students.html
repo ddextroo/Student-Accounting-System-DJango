@@ -1,0 +1,36 @@
+{% for student in students%}
+<tr>
+  <td>
+    <div class="flex items-center gap-3">
+      <div class="avatar">
+        <div class="mask mask-squircle w-12 h-12">
+          <img
+            src="{{student.image.url}}"
+            alt="Avatar Tailwind CSS Component"
+          />
+        </div>
+      </div>
+      <div>
+        <div class="font-bold font-poppins">{{student}}</div>
+        <div class="text-sm opacity-50">{{student.id_number}}</div>
+      </div>
+    </div>
+  </td>
+  <td>
+    {{student.course_name}}
+    <br />
+    {% if student.year_level == 1 %}
+    <span class="badge badge-ghost badge-sm">1st year</span>
+    {% elif student.year_level == 2 %}
+    <span class="badge badge-ghost badge-sm">2nd year</span>
+    {% elif student.year_level == 3 %}
+    <span class="badge badge-ghost badge-sm">3rd year</span>
+    {% elif student.year_level == 4 %}
+    <span class="badge badge-ghost badge-sm">4th year</span>
+    {% endif %}
+  </td>
+  <td>{{student.email_address}}</td>
+  <td>{{student.gender}}</td>
+  <td>{{student.subjects}}</td>
+</tr>
+{% endfor %}

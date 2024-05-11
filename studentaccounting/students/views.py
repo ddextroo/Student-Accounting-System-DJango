@@ -5,10 +5,15 @@ from django.http import HttpResponse
 import os
 from django.conf import settings
 from email_validator import validate_email, EmailNotValidError
+from django.db.models import Q
+import re
+from django.template.loader import render_to_string
 
 
 def index(request):
+    students = Student.objects.all()
     if request.method == "POST":
+        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
             id_number = form.cleaned_data.get("id_number")
@@ -25,27 +30,12 @@ def index(request):
             # Validate image format
             image_extension = os.path.splitext(image.name)[1].lower()
             valid_image_formats = [".jpg", ".jpeg", ".png", ".gif"]
-            if image_extension not in valid_image_formats:
-                return render(
-                    request,
-                    "index.html",
-                    {
-                        "students": students,
-                        "error_messages": "Invalid image format. Only JPG, JPEG, PNG, or GIF are allowed.",
-                    },
-                )
-            try:
-                v = validate_email(email_address)
-                email_address = v["email"]
-            except EmailNotValidError as e:
-                return render(
-                    request,
-                    "index.html",
-                    {
-                        "students": students,
-                        "error_messages": str(e),
-                    },
-                )
+
+            filename = image.name
+            image_path = os.path.join(settings.MEDIA_ROOT, "avatar", filename)
+            with open(image_path, "wb") as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
 
             student = Student(
                 id_number=id_number,
@@ -57,15 +47,30 @@ def index(request):
                 course_name=course_name,
                 year_level=year_level,
                 subjects=subjects,
-                image=image,
+                image=image_path,
             )
-            student.save()
 
-            filename = image.name
-            image_path = os.path.join(settings.MEDIA_ROOT, "avatar", filename)
-            with open(image_path, "wb") as f:
-                for chunk in image.chunks():
-                    f.write(chunk)
+            if image_extension not in valid_image_formats:
+                return render(
+                    request,
+                    "index.html",
+                    {
+                        "students": students,
+                        "error_messages": "Invalid image format. Only JPG, JPEG, PNG, or GIF are allowed.",
+                    },
+                )
+
+            if not re.match(pattern, email_address):
+                return render(
+                    request,
+                    "index.html",
+                    {
+                        "students": students,
+                        "error_messages": "Invalid email address format",
+                    },
+                )
+
+            student.save()
 
             return redirect("/")
         else:
@@ -75,12 +80,23 @@ def index(request):
                     for field, errors in form.errors.items()
                 ]
             )
-            students = Student.objects.all()
             return render(
                 request,
                 "index.html",
                 {"students": students, "error_messages": error_messages},
             )
     else:
-        students = Student.objects.all()
         return render(request, "index.html", {"students": students})
+
+
+def search_students(request):
+    search_query = request.GET.get("search", "")
+    students = Student.objects.filter(
+        Q(id_number__icontains=search_query)
+        | Q(first_name__icontains=search_query)
+        | Q(last_name__icontains=search_query)
+    )
+
+    # Render the table rows without the surrounding table structure
+    html_content = render_to_string("students.html", {"students": students})
+    return HttpResponse(html_content)

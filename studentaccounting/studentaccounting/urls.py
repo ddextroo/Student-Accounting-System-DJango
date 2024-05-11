@@ -24,6 +24,7 @@ from django.urls import path
 urlpatterns = [
     path("admin/", view=admin.site.urls),
     path("", views.index, name="index"),
+    path("students/", views.search_students, name="search_students"),
 ]
 
 if settings.DEBUG:

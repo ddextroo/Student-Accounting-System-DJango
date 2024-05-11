@@ -18,6 +18,11 @@
       }
     </style>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     <title>Student Accounting System</title>
   </head>
   <body>
@@ -25,7 +30,12 @@
       <div class="flex justify-between p-4 items-center">
         <h1 class="font-poppins text-xl font-bold">Students</h1>
         <label class="input flex items-center gap-2">
-          <input type="text" placeholder="Search" class="rounded-xl" />
+          <input
+            id="search"
+            type="text"
+            placeholder="Search"
+            class="rounded-xl"
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -68,7 +78,7 @@
                   <div class="avatar">
                     <div class="mask mask-squircle w-12 h-12">
                       <img
-                        src="{{student.image}}"
+                        src="{{student.image.url}}"
                         alt="Avatar Tailwind CSS Component"
                       />
                     </div>
@@ -186,6 +196,7 @@
                   <option disabled selected>Gender</option>
                   <option>Male</option>
                   <option>Female</option>
+                  <option>Other</option>
                 </select>
               </label>
               <label
@@ -372,4 +383,24 @@
       </div>
     </dialog>
   </body>
+  <script>
+    $(document).ready(function () {
+      $("#search").on("input", function () {
+        var searchQuery = $(this).val().trim();
+        if (searchQuery !== "") {
+          performSearch(searchQuery);
+        } else {
+          history.replaceState(null, null, window.location.pathname);
+        }
+      });
+      function performSearch(query) {
+        var url = "/students/?search=" + encodeURIComponent(query);
+        $.get(url, function (data) {
+          $("tbody").html(data);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          console.error("Error performing search:", textStatus, errorThrown);
+        });
+      }
+    });
+  </script>
 </html>
