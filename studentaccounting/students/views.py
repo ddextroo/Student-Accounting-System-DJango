@@ -27,6 +27,10 @@ def index(request):
             subjects = form.cleaned_data.get("subjects")
             image = form.cleaned_data.get("image")
 
+            if Student.objects.filter(email_address=email_address).exists():
+                error_message = "Email address already in use."
+                return HttpResponse(error_message)
+
             # Validate image format
             image_extension = os.path.splitext(image.name)[1].lower()
             valid_image_formats = [".jpg", ".jpeg", ".png", ".gif"]
@@ -51,24 +55,14 @@ def index(request):
             )
 
             if image_extension not in valid_image_formats:
-                return render(
-                    request,
-                    "index.html",
-                    {
-                        "students": students,
-                        "error_messages": "Invalid image format. Only JPG, JPEG, PNG, or GIF are allowed.",
-                    },
+                error_message = (
+                    "Invalid image format. Only JPG, JPEG, PNG, or GIF are allowed."
                 )
+                return HttpResponse(error_message)
 
             if not re.match(pattern, email_address):
-                return render(
-                    request,
-                    "index.html",
-                    {
-                        "students": students,
-                        "error_messages": "Invalid email address format",
-                    },
-                )
+                error_message = "Invalid email address format"
+                return HttpResponse(error_message)
 
             student.save()
 
@@ -80,11 +74,7 @@ def index(request):
                     for field, errors in form.errors.items()
                 ]
             )
-            return render(
-                request,
-                "index.html",
-                {"students": students, "error_messages": error_messages},
-            )
+            return HttpResponse(error_messages)
     else:
         return render(request, "index.html", {"students": students})
 
